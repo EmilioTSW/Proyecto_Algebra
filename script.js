@@ -6,7 +6,7 @@ const k12 = document.getElementById('k12');
 const k21 = document.getElementById('k21');
 const k22 = document.getElementById('k22');
 const btnEncriptar = document.getElementById('encriptar');
-const btnDesencriptar = document.getElementById('desencriptar'); // <-- agregado
+const btnDesencriptar = document.getElementById('desencriptar');
 const resultado = document.getElementById('resultado');
 
 // Actualizar contador de caracteres
@@ -101,7 +101,7 @@ btnEncriptar.addEventListener('click', () => {
 });
 
 
-//   DESENCRIPTAR  
+// ==================  DESENCRIPTAR  ==================
 
 // Función auxiliar para módulo (evita negativos)
 function mod(n, m) {
