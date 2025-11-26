@@ -194,7 +194,8 @@ btnEncriptar.addEventListener('click', () => {
     let idx = 0;
     let encriptadoConEspacios = '';
     for (let ch of textoOriginal) {
-        if (ch >= 'A' && ch <= 'Z') {
+        const isLetter = ch >= 'A' && ch <= 'Z';
+        if (isLetter) {
             encriptadoConEspacios += encriptadoSoloLetras[idx++] || '';
         } else {
             encriptadoConEspacios += ch; // deja espacios, comas, etc.
@@ -218,7 +219,7 @@ btnDesencriptar.addEventListener('click', () => {
     key = hacerClaveInvertible(key);
 
     const textoCifradoConEspacios = resultado.textContent.toUpperCase();
-    const soloLetrasCifradas = textoCifradoConEspacios.replace(/[^A-Z]/g, '');
+    let soloLetrasCifradas = textoCifradoConEspacios.replace(/[^A-Z]/g, '');
 
     if (soloLetrasCifradas.length === 0) {
         resultado.textContent = 'Error: No hay texto cifrado en el resultado';
@@ -226,10 +227,9 @@ btnDesencriptar.addEventListener('click', () => {
         return;
     }
 
+    // Si la cantidad de letras es impar, agregamos padding 'X' para poder desencriptar
     if (soloLetrasCifradas.length % 2 !== 0) {
-        resultado.textContent = 'Error: El texto cifrado (letras) debe tener longitud par';
-        resultado.classList.add('error');
-        return;
+        soloLetrasCifradas += 'X';
     }
 
     const invKey = matrizInversa(key);
@@ -264,7 +264,8 @@ btnDesencriptar.addEventListener('click', () => {
     let idx = 0;
     let textoPlanoConEspacios = '';
     for (let ch of textoCifradoConEspacios) {
-        if (ch >= 'A' && ch <= 'Z') {
+        const isLetter = ch >= 'A' && ch <= 'Z';
+        if (isLetter) {
             textoPlanoConEspacios += textoPlanoSoloLetras[idx++] || '';
         } else {
             textoPlanoConEspacios += ch; // conserva espacios, comas, etc.
