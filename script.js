@@ -172,7 +172,7 @@ btnEncriptar.addEventListener('click', () => {
     // Convertir solo letras a números
     let numeros = soloLetras.split('').map(char => char.charCodeAt(0) - 65);
     
-    // Agregar padding si es impar
+    // Agregar padding si es impar (para la operación de Hill)
     if (numeros.length % 2 !== 0) {
         numeros.push(23); // 'X'
     }
@@ -201,6 +201,11 @@ btnEncriptar.addEventListener('click', () => {
             encriptadoConEspacios += ch; // deja espacios, comas, etc.
         }
     }
+
+    // Si sobran letras cifradas (por el padding), agrégalas al final
+    if (idx < encriptadoSoloLetras.length) {
+        encriptadoConEspacios += encriptadoSoloLetras.slice(idx);
+    }
     
     resultado.textContent = encriptadoConEspacios;
 });
@@ -219,17 +224,12 @@ btnDesencriptar.addEventListener('click', () => {
     key = hacerClaveInvertible(key);
 
     const textoCifradoConEspacios = resultado.textContent.toUpperCase();
-    let soloLetrasCifradas = textoCifradoConEspacios.replace(/[^A-Z]/g, '');
+    const soloLetrasCifradas = textoCifradoConEspacios.replace(/[^A-Z]/g, '');
 
     if (soloLetrasCifradas.length === 0) {
         resultado.textContent = 'Error: No hay texto cifrado en el resultado';
         resultado.classList.add('error');
         return;
-    }
-
-    // Si la cantidad de letras es impar, agregamos padding 'X' para poder desencriptar
-    if (soloLetrasCifradas.length % 2 !== 0) {
-        soloLetrasCifradas += 'X';
     }
 
     const invKey = matrizInversa(key);
@@ -240,11 +240,12 @@ btnDesencriptar.addEventListener('click', () => {
         return;
     }
 
-    // Desencriptar solo las letras
+    // Desencriptar solo las letras (de 2 en 2)
     let numeros = soloLetrasCifradas.split('').map(c => c.charCodeAt(0) - 65);
     let textoPlanoSoloLetras = '';
 
     for (let i = 0; i < numeros.length; i += 2) {
+        if (i + 1 >= numeros.length) break; // si queda una sola, se ignora (era padding)
         const c1 = numeros[i];
         const c2 = numeros[i + 1];
 
@@ -255,21 +256,21 @@ btnDesencriptar.addEventListener('click', () => {
         textoPlanoSoloLetras += String.fromCharCode(65 + p2);
     }
 
-    // Quitar posible padding 'X' al final (solo en las letras)
-    if (textoPlanoSoloLetras.endsWith('X')) {
-        textoPlanoSoloLetras = textoPlanoSoloLetras.slice(0, -1);
-    }
-
     // Reconstruir texto plano respetando espacios y otros caracteres
     let idx = 0;
     let textoPlanoConEspacios = '';
     for (let ch of textoCifradoConEspacios) {
         const isLetter = ch >= 'A' && ch <= 'Z';
-        if (isLetter) {
+        if (isLetter && idx < textoPlanoSoloLetras.length) {
             textoPlanoConEspacios += textoPlanoSoloLetras[idx++] || '';
         } else {
             textoPlanoConEspacios += ch; // conserva espacios, comas, etc.
         }
+    }
+
+    // Quitar posible padding 'X' al final (si quedó visible)
+    if (textoPlanoConEspacios.endsWith('X')) {
+        textoPlanoConEspacios = textoPlanoConEspacios.slice(0, -1);
     }
 
     resultado.textContent = textoPlanoConEspacios;
