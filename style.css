@@ -1,3 +1,6 @@
+/* Fuente moderna */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -5,8 +8,8 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #bfdbfe 0%, #dbeafe 100%);
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -14,17 +17,20 @@ body {
     padding: 20px;
 }
 
+/* CONTENEDOR */
 .container {
-    background: #ffffff;
+    background: #111827;
     max-width: 600px;
     width: 100%;
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.18);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid #1f2937;
 }
 
+/* TÍTULOS */
 h1 {
-    color: #1d4ed8;
+    color: #60a5fa;
     text-align: center;
     margin-bottom: 30px;
     font-size: 32px;
@@ -32,61 +38,69 @@ h1 {
 }
 
 h3 {
-    color: #1e40af;
+    color: #93c5fd;
     margin-bottom: 15px;
     font-size: 18px;
     font-weight: 500;
 }
 
+/* SECCIONES */
 .section {
     margin-bottom: 25px;
 }
 
 label {
     display: block;
-    color: #111827;
+    color: #e5e7eb;
     margin-bottom: 8px;
     font-weight: 500;
 }
 
+/* TEXTAREA */
 textarea {
     width: 100%;
     padding: 12px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid #374151;
     border-radius: 6px;
     font-size: 16px;
     resize: vertical;
     min-height: 80px;
-    font-family: inherit;
+    background-color: #1f2937;
+    color: #f3f4f6;
     transition: border-color 0.3s, box-shadow 0.3s;
-    background-color: #f9fafb;
+}
+
+textarea::placeholder {
+    color: #9ca3af;
 }
 
 textarea:focus {
     outline: none;
     border-color: #60a5fa;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
 }
 
+/* CONTADOR */
 .char-count {
     text-align: right;
-    color: #6b7280;
+    color: #9ca3af;
     font-size: 12px;
     margin-top: 5px;
 }
 
+/* MATRIZ */
 .matriz-display {
-    background: #eff6ff;
+    background: #1e293b;
     padding: 20px;
     border-radius: 6px;
-    border: 2px solid #dbeafe;
+    border: 2px solid #374151;
     min-height: 60px;
     font-family: 'Courier New', monospace;
-    color: #1f2937;
+    color: #e2e8f0;
     line-height: 1.8;
 }
 
+/* MATRIZ CLAVE */
 .matriz-input {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -96,21 +110,22 @@ textarea:focus {
 
 .matriz-input input {
     padding: 12px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid #374151;
     border-radius: 6px;
     font-size: 18px;
     text-align: center;
+    background-color: #1f2937;
+    color: #f3f4f6;
     transition: border-color 0.3s, box-shadow 0.3s;
-    background-color: #f9fafb;
 }
 
 .matriz-input input:focus {
     outline: none;
     border-color: #60a5fa;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
 }
 
+/* BOTONES */
 button {
     width: 100%;
     padding: 15px;
@@ -124,46 +139,47 @@ button {
     color: #ffffff;
 }
 
-/* Encriptar: azul claro */
+/* Encriptar: azul oscuro */
 #encriptar {
-    background: #3b82f6;
-    box-shadow: 0 6px 14px rgba(59, 130, 246, 0.35);
+    background: #1d4ed8;
+    box-shadow: 0 6px 14px rgba(29, 78, 216, 0.35);
 }
 
 #encriptar:hover {
-    background: #2563eb;
-    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.45);
+    background: #1e40af;
+    box-shadow: 0 8px 18px rgba(29, 78, 216, 0.5);
 }
 
-/* Desencriptar: verde claro */
+/* Desencriptar: verde oscuro */
 #desencriptar {
-    background: #22c55e;
-    box-shadow: 0 6px 14px rgba(34, 197, 94, 0.35);
+    background: #15803d;
+    box-shadow: 0 6px 14px rgba(21, 128, 61, 0.35);
 }
 
 #desencriptar:hover {
-    background: #16a34a;
-    box-shadow: 0 8px 18px rgba(22, 163, 74, 0.45);
+    background: #166534;
+    box-shadow: 0 8px 18px rgba(21, 128, 61, 0.5);
 }
 
 button:active {
     transform: scale(0.97);
 }
 
+/* RESULTADO */
 .resultado-box {
-    background: #f9fafb;
+    background: #1f2937;
     padding: 20px;
     border-radius: 6px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid #374151;
     min-height: 60px;
     font-family: 'Courier New', monospace;
-    color: #111827;
+    color: #f9fafb;
     word-wrap: break-word;
 }
 
-/* Solo para otros errores (mensaje vacío, etc.) */
+/* ERRORES */
 .error {
-    color: #b91c1c;
-    background: #fee2e2;
-    border-color: #fecaca;
+    color: #fca5a5;
+    background: #7f1d1d;
+    border-color: #ef4444;
 }
