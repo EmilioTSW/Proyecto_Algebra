@@ -123,7 +123,7 @@ mensaje.addEventListener('input', () => {
     mostrarMatrizMensaje();
 });
 
-// Mostrar matriz del mensaje
+// Mostrar matriz del mensaje (solo letras, sin espacios)
 function mostrarMatrizMensaje() {
     const texto = mensaje.value.toUpperCase().replace(/[^A-Z]/g, '');
     
@@ -138,20 +138,16 @@ function mostrarMatrizMensaje() {
     let matriz = '[';
     for (let i = 0; i < valores.length; i += 2) {
         if (i > 0) matriz += ' ';
-        matriz += '[' + valores[i];
-        if (i + 1 < valores.length) {
-            matriz += ', ' + valores[i + 1];
-        } else {
-            matriz += ', 23'; // Padding con 'X'
-        }
-        matriz += ']';
+        const v1 = valores[i];
+        const v2 = (i + 1 < valores.length) ? valores[i + 1] : 23; // padding con 'X'
+        matriz += `[${v1}, ${v2}]`;
     }
     matriz += ']';
     
     matrizMensaje.textContent = matriz;
 }
 
-// ============ ENCRIPTAR ============
+// ============ ENCRIPTAR (respetando espacios) ============
 
 btnEncriptar.addEventListener('click', () => {
     resultado.classList.remove('error');
@@ -164,24 +160,25 @@ btnEncriptar.addEventListener('click', () => {
     // Convertimos la clave en una clave siempre válida
     key = hacerClaveInvertible(key);
     
-    const texto = mensaje.value.toUpperCase().replace(/[^A-Z]/g, '');
+    const textoOriginal = mensaje.value.toUpperCase();
+    const soloLetras = textoOriginal.replace(/[^A-Z]/g, '');
     
-    if (texto.length === 0) {
+    if (soloLetras.length === 0) {
         resultado.textContent = 'Error: Ingresa un mensaje';
         resultado.classList.add('error');
         return;
     }
     
-    // Convertir texto a números
-    let numeros = texto.split('').map(char => char.charCodeAt(0) - 65);
+    // Convertir solo letras a números
+    let numeros = soloLetras.split('').map(char => char.charCodeAt(0) - 65);
     
     // Agregar padding si es impar
     if (numeros.length % 2 !== 0) {
         numeros.push(23); // 'X'
     }
     
-    // Encriptar
-    let encriptado = '';
+    // Encriptar únicamente las letras
+    let encriptadoSoloLetras = '';
     for (let i = 0; i < numeros.length; i += 2) {
         const v1 = numeros[i];
         const v2 = numeros[i + 1];
@@ -189,14 +186,25 @@ btnEncriptar.addEventListener('click', () => {
         const c1 = mod(key[0][0] * v1 + key[0][1] * v2, 26);
         const c2 = mod(key[1][0] * v1 + key[1][1] * v2, 26);
         
-        encriptado += String.fromCharCode(65 + c1);
-        encriptado += String.fromCharCode(65 + c2);
+        encriptadoSoloLetras += String.fromCharCode(65 + c1);
+        encriptadoSoloLetras += String.fromCharCode(65 + c2);
+    }
+
+    // Reconstruir texto cifrado respetando espacios y caracteres no letras
+    let idx = 0;
+    let encriptadoConEspacios = '';
+    for (let ch of textoOriginal) {
+        if (ch >= 'A' && ch <= 'Z') {
+            encriptadoConEspacios += encriptadoSoloLetras[idx++] || '';
+        } else {
+            encriptadoConEspacios += ch; // deja espacios, comas, etc.
+        }
     }
     
-    resultado.textContent = encriptado;
+    resultado.textContent = encriptadoConEspacios;
 });
 
-// ============ DESENCRIPTAR ============
+// ============ DESENCRIPTAR (respetando espacios) ============
 
 btnDesencriptar.addEventListener('click', () => {
     resultado.classList.remove('error');
@@ -209,31 +217,32 @@ btnDesencriptar.addEventListener('click', () => {
     // Usamos la misma lógica: corregir clave a una invertible
     key = hacerClaveInvertible(key);
 
-    const textoCifrado = resultado.textContent.toUpperCase().replace(/[^A-Z]/g, '');
+    const textoCifradoConEspacios = resultado.textContent.toUpperCase();
+    const soloLetrasCifradas = textoCifradoConEspacios.replace(/[^A-Z]/g, '');
 
-    if (textoCifrado.length === 0) {
+    if (soloLetrasCifradas.length === 0) {
         resultado.textContent = 'Error: No hay texto cifrado en el resultado';
         resultado.classList.add('error');
         return;
     }
 
-    if (textoCifrado.length % 2 !== 0) {
-        resultado.textContent = 'Error: El texto cifrado debe tener longitud par';
+    if (soloLetrasCifradas.length % 2 !== 0) {
+        resultado.textContent = 'Error: El texto cifrado (letras) debe tener longitud par';
         resultado.classList.add('error');
         return;
     }
 
     const invKey = matrizInversa(key);
 
-    // Por construcción, invKey no debería ser null, pero por seguridad:
     if (!invKey) {
         resultado.textContent = 'Error inesperado con la clave generada';
         resultado.classList.add('error');
         return;
     }
 
-    let numeros = textoCifrado.split('').map(c => c.charCodeAt(0) - 65);
-    let textoPlano = '';
+    // Desencriptar solo las letras
+    let numeros = soloLetrasCifradas.split('').map(c => c.charCodeAt(0) - 65);
+    let textoPlanoSoloLetras = '';
 
     for (let i = 0; i < numeros.length; i += 2) {
         const c1 = numeros[i];
@@ -242,14 +251,25 @@ btnDesencriptar.addEventListener('click', () => {
         const p1 = mod(invKey[0][0] * c1 + invKey[0][1] * c2, 26);
         const p2 = mod(invKey[1][0] * c1 + invKey[1][1] * c2, 26);
 
-        textoPlano += String.fromCharCode(65 + p1);
-        textoPlano += String.fromCharCode(65 + p2);
+        textoPlanoSoloLetras += String.fromCharCode(65 + p1);
+        textoPlanoSoloLetras += String.fromCharCode(65 + p2);
     }
 
-    // Quitar posible padding 'X' al final
-    if (textoPlano.endsWith('X')) {
-        textoPlano = textoPlano.slice(0, -1);
+    // Quitar posible padding 'X' al final (solo en las letras)
+    if (textoPlanoSoloLetras.endsWith('X')) {
+        textoPlanoSoloLetras = textoPlanoSoloLetras.slice(0, -1);
     }
 
-    resultado.textContent = textoPlano;
+    // Reconstruir texto plano respetando espacios y otros caracteres
+    let idx = 0;
+    let textoPlanoConEspacios = '';
+    for (let ch of textoCifradoConEspacios) {
+        if (ch >= 'A' && ch <= 'Z') {
+            textoPlanoConEspacios += textoPlanoSoloLetras[idx++] || '';
+        } else {
+            textoPlanoConEspacios += ch; // conserva espacios, comas, etc.
+        }
+    }
+
+    resultado.textContent = textoPlanoConEspacios;
 });
