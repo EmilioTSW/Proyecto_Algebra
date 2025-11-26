@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: radial-gradient(circle at top, #3b82f6 0%, #1e3c72 40%, #0b1120 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -14,30 +14,35 @@ body {
     padding: 20px;
 }
 
+/* CONTENEDOR PRINCIPAL */
 .container {
     background: white;
-    max-width: 600px;
+    max-width: 650px;
     width: 100%;
     padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border-radius: 14px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
+/* TITULOS */
 h1 {
     color: #1e3c72;
     text-align: center;
     margin-bottom: 30px;
     font-size: 32px;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 h3 {
     color: #2a5298;
     margin-bottom: 15px;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
+/* SECCIONES */
 .section {
     margin-bottom: 25px;
 }
@@ -49,23 +54,26 @@ label {
     font-weight: 500;
 }
 
+/* TEXTAREA MENSAJE */
 textarea {
     width: 100%;
     padding: 12px;
     border: 2px solid #e0e0e0;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 16px;
     resize: vertical;
     min-height: 80px;
     font-family: inherit;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 textarea:focus {
     outline: none;
     border-color: #2a5298;
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.2);
 }
 
+/* CONTADOR DE CARACTERES */
 .char-count {
     text-align: right;
     color: #666;
@@ -73,73 +81,101 @@ textarea:focus {
     margin-top: 5px;
 }
 
+/* MATRIZ DEL MENSAJE */
 .matriz-display {
-    background: #f5f5f5;
+    background: #f3f6ff;
     padding: 20px;
-    border-radius: 4px;
-    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    border: 2px solid #d6e0ff;
     min-height: 60px;
     font-family: 'Courier New', monospace;
-    color: #333;
+    color: #1f2933;
     line-height: 1.8;
 }
 
+/* INPUTS MATRIZ CLAVE */
 .matriz-input {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    max-width: 200px;
+    max-width: 220px;
 }
 
 .matriz-input input {
     padding: 12px;
     border: 2px solid #e0e0e0;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 18px;
     text-align: center;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .matriz-input input:focus {
     outline: none;
     border-color: #2a5298;
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.2);
 }
 
+/* BOTONES */
 button {
     width: 100%;
     padding: 15px;
-    background: #2a5298;
-    color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s;
-    margin: 20px 0;
+    transition: background 0.3s, transform 0.1s, box-shadow 0.3s;
+    margin: 10px 0;
+    color: white;
 }
 
-button:hover {
-    background: #1e3c72;
+/* Botón ENCRIPTAR (principal) */
+#encriptar {
+    background: linear-gradient(135deg, #2563eb, #1e3a8a);
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.4);
 }
 
-button:active {
-    transform: scale(0.98);
+#encriptar:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.5);
 }
 
+#encriptar:active {
+    transform: scale(0.97);
+}
+
+/* Botón DESENCRIPTAR (secundario) */
+#desencriptar {
+    background: linear-gradient(135deg, #16a34a, #166534);
+    box-shadow: 0 8px 18px rgba(22, 163, 74, 0.4);
+}
+
+#desencriptar:hover {
+    background: linear-gradient(135deg, #15803d, #166534);
+    box-shadow: 0 10px 24px rgba(22, 163, 74, 0.5);
+}
+
+#desencriptar:active {
+    transform: scale(0.97);
+}
+
+/* RESULTADO */
 .resultado-box {
-    background: #f5f5f5;
+    background: #f9fafb;
     padding: 20px;
-    border-radius: 4px;
-    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    border: 2px solid #e5e7eb;
     min-height: 60px;
     font-family: 'Courier New', monospace;
-    color: #333;
+    color: #111827;
     word-wrap: break-word;
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
 }
 
+/* Cuando hay error (la clase .error la sigues usando igual en JS) */
 .error {
-    color: #d32f2f;
-    background: #ffebee;
-    border-color: #d32f2f;
+    color: #b91c1c;
+    background: #fef2f2;
+    border-color: #b91c1c;
 }
